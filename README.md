@@ -11,7 +11,7 @@ t provides a function for every html5 tag, and allows you to pass in both conten
 Examples
 --------
 ```
-t.h1("Hello World", { class: 'first-snippet'})
+t.h1({ class: 'first-snippet'}, "Hello World" )
 ```
 returns:
 ```
@@ -20,7 +20,7 @@ returns:
 
 Pass arguments in either order.
 ```
-t.h1({ class: 'first-snippet'}, "Hello World" )
+t.h1("Hello World", { class: 'first-snippet'})
 ```
 returns
 ```
@@ -30,6 +30,10 @@ returns
 Tags are also nestable:
 ```
 t.div({ class: 'parent'}, t.p({ class: 'child'}, "text"));
+```
+returns
+```
+"<div class='parent'><p class='child'>text</p></div>"
 ```
 
 Dependencies
