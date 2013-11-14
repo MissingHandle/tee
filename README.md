@@ -39,3 +39,8 @@ returns
 Dependencies
 ------------
 underscore.js
+
+
+Tests
+-----
+run tests with ```testem```
