@@ -1,7 +1,7 @@
-tee
-===
+tee.js
+======
 
-tee.js - A small html-snippet helper library.
+A small html-snippet helper library.
 
 Created for use in client-side javascript, tee.js defines a global object, 
 't', which lets you write small snippets of sugary, no-mistakes HTML.
