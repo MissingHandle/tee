@@ -35,14 +35,14 @@ t.SELF_CLOSING_TAGS = [
 ];
 
 // Two underscore templates,
-// one for self-closing tags, one for regular tags.
+// one for self-closing tags, one for regular closing tags.
 // used internally by 't'.
-t.sc_template = 
-  "<(%= tag %)(% _.each(atts, function(value, key) { %) (%= key %)='(%= value %)'(% }); %) />";
-t.ct_template = 
+t.sc_template = _.template("<(%= tag %)(% _.each(atts, function(value, key) { %) (%= key %)='(%= value %)'(% }); %) />");
+t.ct_template = _.template(
   "<(%= tag %)(% _.each(atts, function(value, key) { %) (%= key %)='(%= value %)'(% }); %)>" +
     "(%= content %)" + 
-  "</(%= tag %)>";
+  "</(%= tag %)>"
+);
 
 
 // tag(_tag [, content] [, attributes])
@@ -66,30 +66,23 @@ t.tag = function(_tag) { //, atts, content
   };
 
   if (_tag) {
- 
-    // Not a self-closing tag 
+
+    // A Standard closing tag 
     if (_.indexOf(t.SELF_CLOSING_TAGS, _tag, true) == -1 ) {
-      return _.template(t.ct_template, { tag: _tag, atts: atts, content: content }); 
+      return t.ct_template({ tag: _tag, atts: atts, content: content }); 
     };
 
     // A self-closing tag
-    return _.template(t.sc_template, { tag: _tag, atts: atts });
+    return t.sc_template({ tag: _tag, atts: atts });
 
   } else {
-  
+
     return '';
-  
+
   };
 
 };
 
-defineConvenienceMethod = function(_tag) {
-
-  window.t[_tag] = function(atts, content) {
-    return t.tag(_tag, atts, content)
-  } 
-
-};
 
 // *************************
 // 
@@ -97,10 +90,18 @@ defineConvenienceMethod = function(_tag) {
 // delegate to t.tag
 // 
 // *************************
+t._defineConvenienceMethod = function(_tag) {
+
+  window.t[_tag] = function(atts, content) {
+    return t.tag(_tag, atts, content)
+  } 
+
+};
+
 _.each(
   ["html","head","title","base","link","meta","style","script","noscript","body","section","nav","article","aside","h1","h2","h3","h4","h5","h6","hgroup","header","footer","address","main","p","hr","pre","blockquote","ol","ul","li","dl","dt","dd","figure","figcaption","div","a","em","strong","small","s","cite","q","dfn","abbr","data","time","code","var","samp","kbd","sub","sup","i","b","u","mark","ruby","rt","rp","bdi","bdo","span","br","wbr","ins","del","img","iframe","embed","object","param","video","audio","source","track","canvas","map","area","svg","math","table","caption","colgroup","col","tbody","thead","tfoot","tr","td","th","form","fieldset","legend","label","input","button","select","datalist","optgroup","option","textarea","keygen","output","progress","meter","details","summary","command","menu"],
   function(html_tag) {
-    defineConvenienceMethod(html_tag)
+    t._defineConvenienceMethod(html_tag)
   }
 );
 
@@ -147,18 +148,3 @@ t.formInput = function(type, label, atts) {
       return t.span("UNIMPLEMENTED FORM INPUT TYPE '" + type + "'", atts);
   };
 };
-
-t.formInputGroup = function(atts) {
-  var name, id, value, checked;
-  name = atts.name || "";
-  id = atts.id || atts.name || "";
-  value = atts.value || "";
-  checked = atts.checked || "";
-  numberOfOptions = atts.numberOfOptions;
-  // 'for' attribute in label is actually unnecessary!
-  // 'name' needs to be the same for the group
-  return '<label class="'+type+'" for="'+id+'_'+numberOfOptions+'">'+
-    '<input type="'+type+'" name="'+name+'" id="'+id+'_'+numberOfOptions+'" value="'+value+'" '+checked+'>'+label+
-  '</label>'
-///
-}
