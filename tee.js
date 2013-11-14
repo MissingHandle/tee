@@ -21,7 +21,7 @@
 (function() {
 
   //override underscore's template settings
-  var previousTemplateSettings = _.templateSettings
+  var previousTemplateSettings = _.clone(_.templateSettings);
   _.templateSettings = {
     interpolate : /\(\%\=(.+?)\%\)/g,
     evaluate    : /\(\%(.+?)\%\)/g,

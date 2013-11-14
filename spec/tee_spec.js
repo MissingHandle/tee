@@ -1,6 +1,6 @@
 describe('t', function(){
 
-  var everyHTMLtag = [
+  var allHTMLtags = [
     "html","head","title","base","link","meta","style","script","noscript","body",
     "section","nav","article","aside","h1","h2","h3","h4","h5","h6","hgroup","header","footer",
     "address","main","p","hr","pre","blockquote","ol","ul","li","dl","dt","dd","figure","figcaption",
@@ -35,30 +35,30 @@ describe('t', function(){
     expect(t.tag("div")).toBe("<div></div>");
   })
 
-  it('.tag("input"), or any valid self-closing tag, should return the proper string', function(){
+  it('.tag("input"), or any valid self-closing tag, should return the proper string (<input />)', function(){
     expect(t.tag("input")).toBe("<input />");
   })
 
-  it('.tag("div"), or any valid tag, should return the string that is that empty tag', function(){
+  it('.tag("div"), or any valid tag, should return the proper string (<div></div>)', function(){
     expect(t.tag("div")).toBe("<div></div>");
   })
 
-  it('.tag("div", {id: "some-id"}), should correctly add the attribute to the tag', function(){
+  it('.tag("div", {id: "some-id"}), should include the attribute in the tag (<div id="some-id"></div>)', function(){
     expect(t.tag("div", {id: "some-id"})).toBe("<div id='some-id'></div>");
   });
 
-  it('.tag("div", "content"), should correctly place content within the tag', function(){
+  it('.tag("div", "content"), should include content within the tag (<div>content</div>)', function(){
     expect(t.tag("div", "content")).toBe("<div>content</div>");
   });
 
-  it('.tag, should be able to handle both attributes and content in either order', function(){
+  it('.tag, should correctly handle attributes and content arguments in either order', function(){
     expect(t.tag("div", {id: "some-id"}, "content")).toBe("<div id='some-id'>content</div>");
     expect(t.tag("div", "content", {id: "some-id"})).toBe("<div id='some-id'>content</div>");
   });
 
   it('should have convenience methods defined for every html tag that delegate to tag', function() {
     spyOn(t, 'tag');
-    _.each(everyHTMLtag, function(_tag) {
+    _.each(allHTMLtags, function(_tag) {
       (t[_tag])(null, null);
       expect(t.tag).toHaveBeenCalledWith(_tag, null, null)
     });
